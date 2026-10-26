@@ -1,0 +1,363 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DGV Sistemas · Gestión para autopartistas y sitios web</title>
+<meta name="description" content="Sistema de gestión para distribuidoras y fábricas de autopartes: factura electrónica ARCA, listas de precios por cliente, compras, recibos y cheques. Desarrollo y mantenimiento de sitios web.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230f2a44'/%3E%3Ctext x='32' y='41' font-family='Arial' font-weight='700' font-size='22' fill='%23f28c28' text-anchor='middle'%3EDGV%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  /* ==== DATOS PARA CAMBIAR: buscar "CAMBIAR" en este archivo (WhatsApp y correo) ==== */
+  :root {
+    --azul: #0f2a44; --azul-2: #17395c; --naranja: #f28c28; --naranja-osc: #d9721a;
+    --fondo: #ffffff; --fondo-2: #f4f6f9; --texto: #1c2733; --suave: #5b6878; --borde: #e2e7ee;
+    --tarjeta: #ffffff; --sombra: 0 10px 30px rgba(15, 42, 68, .08);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --fondo: #0d1621; --fondo-2: #121e2c; --texto: #e7edf4; --suave: #9fb0c3; --borde: #22324a;
+      --tarjeta: #15233a; --sombra: 0 10px 30px rgba(0, 0, 0, .35);
+    }
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; color: var(--texto);
+    background: var(--fondo); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; }
+  .cont { width: 100%; max-width: 1120px; margin: 0 auto; padding: 0 20px; }
+
+  /* Encabezado */
+  header { position: sticky; top: 0; z-index: 20; background: rgba(15, 42, 68, .96); backdrop-filter: blur(8px); }
+  .barra { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+  .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: #fff; font-weight: 700; font-size: 18px; }
+  .logo b { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 10px; background: var(--naranja);
+    color: var(--azul); font-size: 14px; letter-spacing: .5px; }
+  nav { display: flex; gap: 26px; align-items: center; }
+  nav a { color: #cfdbe8; text-decoration: none; font-size: 15px; font-weight: 500; }
+  nav a:hover { color: #fff; }
+  .menu-btn { display: none; background: none; border: 0; color: #fff; font-size: 26px; cursor: pointer; }
+
+  .boton { display: inline-flex; align-items: center; gap: 8px; padding: 13px 22px; border-radius: 10px; font-weight: 600;
+    text-decoration: none; font-size: 15px; transition: transform .15s, background .15s; border: 2px solid transparent; }
+  .boton:hover { transform: translateY(-1px); }
+  .b-naranja { background: var(--naranja); color: #1a1205; }
+  .b-naranja:hover { background: var(--naranja-osc); }
+  .b-linea { border-color: rgba(255, 255, 255, .35); color: #fff; }
+  .b-linea:hover { border-color: #fff; }
+  nav .boton { padding: 9px 16px; color: #1a1205; }
+
+  /* Portada */
+  .portada { background: radial-gradient(1000px 500px at 85% 10%, #1f4b78 0%, transparent 60%), var(--azul); color: #fff; padding: 80px 0 90px; overflow: hidden; }
+  .portada .cont { display: grid; grid-template-columns: 1.05fr 1fr; gap: 50px; align-items: center; }
+  .etiqueta { display: inline-block; background: rgba(242, 140, 40, .15); color: var(--naranja); border: 1px solid rgba(242, 140, 40, .4);
+    padding: 5px 12px; border-radius: 99px; font-size: 13px; font-weight: 600; margin-bottom: 18px; }
+  h1 { font-size: clamp(32px, 4.6vw, 50px); line-height: 1.12; margin: 0 0 18px; font-weight: 800; letter-spacing: -.5px; }
+  h1 span { color: var(--naranja); }
+  .portada p.lead { font-size: 18px; color: #c7d5e4; margin: 0 0 30px; max-width: 540px; }
+  .acciones { display: flex; gap: 14px; flex-wrap: wrap; }
+  .datos-rapidos { display: flex; gap: 30px; margin-top: 38px; flex-wrap: wrap; }
+  .datos-rapidos div { font-size: 14px; color: #a9bcd0; }
+  .datos-rapidos strong { display: block; color: #fff; font-size: 22px; }
+
+  /* Ventana de ejemplo */
+  .ventana { background: #fff; color: #1c2733; border-radius: 14px; box-shadow: 0 30px 60px rgba(0, 0, 0, .35); overflow: hidden; font-size: 13px; }
+  .ventana .titulo { background: #e9eef4; padding: 10px 14px; display: flex; gap: 7px; align-items: center; }
+  .ventana .titulo i { width: 11px; height: 11px; border-radius: 50%; background: #f26b5b; display: block; }
+  .ventana .titulo i:nth-child(2) { background: #f5bf4f; } .ventana .titulo i:nth-child(3) { background: #5bc46a; }
+  .ventana .titulo span { margin-left: 10px; color: #6b7a8c; font-size: 12px; }
+  .ventana .cuerpo { padding: 18px; }
+  .v-enc { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+  .v-enc h4 { margin: 0; font-size: 15px; color: var(--azul); }
+  .chip { font-size: 11px; font-weight: 700; padding: 4px 9px; border-radius: 99px; background: #e5f6ea; color: #1d7a3a; }
+  .ventana table { width: 100%; border-collapse: collapse; }
+  .ventana th { text-align: left; font-size: 11px; color: #7a889a; font-weight: 600; padding: 6px 4px; border-bottom: 1px solid #e6ebf1; }
+  .ventana td { padding: 7px 4px; border-bottom: 1px solid #f0f3f7; }
+  .ventana td.n, .ventana th.n { text-align: right; font-variant-numeric: tabular-nums; }
+  .v-total { display: flex; justify-content: space-between; margin-top: 12px; padding-top: 10px; border-top: 2px solid #e6ebf1; font-weight: 700; }
+  .v-cae { margin-top: 10px; font-size: 11px; color: #6b7a8c; background: #f4f7fa; padding: 8px 10px; border-radius: 8px; }
+
+  /* Secciones */
+  section { padding: 84px 0; }
+  .gris { background: var(--fondo-2); }
+  .sec-titulo { text-align: center; max-width: 700px; margin: 0 auto 48px; }
+  .sec-titulo small { color: var(--naranja); font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; font-size: 13px; }
+  h2 { font-size: clamp(26px, 3.4vw, 36px); line-height: 1.2; margin: 8px 0 14px; letter-spacing: -.3px; }
+  .sec-titulo p { color: var(--suave); font-size: 17px; margin: 0; }
+
+  .grilla { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+  .tarjeta { background: var(--tarjeta); border: 1px solid var(--borde); border-radius: 14px; padding: 26px; box-shadow: var(--sombra); }
+  .tarjeta h3 { margin: 14px 0 8px; font-size: 18px; }
+  .tarjeta p { margin: 0; color: var(--suave); font-size: 15px; }
+  .icono { width: 46px; height: 46px; border-radius: 11px; display: grid; place-items: center; background: rgba(242, 140, 40, .13); color: var(--naranja); }
+  .icono svg { width: 24px; height: 24px; }
+
+  /* Problemas */
+  .dolores { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; max-width: 900px; margin: 0 auto; }
+  .dolor { display: flex; gap: 14px; align-items: flex-start; background: var(--tarjeta); border: 1px solid var(--borde); border-radius: 12px; padding: 18px 20px; }
+  .dolor .x { flex: none; width: 26px; height: 26px; border-radius: 50%; background: #fde8e6; color: #c8402f; display: grid; place-items: center; font-weight: 800; font-size: 14px; }
+  .dolor p { margin: 0; font-size: 15px; }
+
+  /* Real */
+  .real { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center; }
+  .lista-ok { list-style: none; padding: 0; margin: 22px 0 0; }
+  .lista-ok li { padding: 8px 0 8px 34px; position: relative; }
+  .lista-ok li::before { content: "✓"; position: absolute; left: 0; top: 7px; width: 22px; height: 22px; border-radius: 50%;
+    background: rgba(242, 140, 40, .15); color: var(--naranja); font-weight: 800; font-size: 13px; display: grid; place-items: center; }
+  .cita { background: var(--azul); color: #fff; border-radius: 16px; padding: 34px; position: relative; }
+  .cita p { font-size: 19px; line-height: 1.5; margin: 0 0 16px; }
+  .cita span { color: #a9bcd0; font-size: 14px; }
+  .cita::before { content: ""; position: absolute; top: -10px; left: 24px; font-size: 90px; color: var(--naranja); line-height: 1; font-family: Georgia, serif; }
+
+  /* Modalidades */
+  .planes { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; max-width: 900px; margin: 0 auto; }
+  .plan { background: var(--tarjeta); border: 1px solid var(--borde); border-radius: 16px; padding: 30px; box-shadow: var(--sombra); }
+  .plan.destacado { border: 2px solid var(--naranja); }
+  .plan h3 { margin: 0 0 6px; font-size: 21px; }
+  .plan .sub { color: var(--suave); margin: 0 0 18px; font-size: 15px; }
+  .plan ul { margin: 0; padding-left: 20px; color: var(--texto); }
+  .plan li { margin: 6px 0; font-size: 15px; }
+  .pasos { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-top: 50px; }
+  .paso { text-align: center; padding: 0 8px; }
+  .paso b { display: grid; place-items: center; width: 44px; height: 44px; margin: 0 auto 12px; border-radius: 50%; background: var(--azul); color: #fff; font-size: 17px; }
+  .paso h4 { margin: 0 0 6px; font-size: 16px; }
+  .paso p { margin: 0; color: var(--suave); font-size: 14px; }
+
+  /* Web */
+  .web { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+
+  /* Contacto */
+  .contacto { background: var(--azul); color: #fff; text-align: center; }
+  .contacto h2 { color: #fff; }
+  .contacto p { color: #c7d5e4; font-size: 17px; max-width: 620px; margin: 0 auto 30px; }
+  .contacto .acciones { justify-content: center; }
+  footer { background: #0a1d30; color: #8ea3b9; font-size: 14px; padding: 26px 0; }
+  footer .cont { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+
+  .wa-flotante { position: fixed; right: 18px; bottom: 18px; z-index: 30; width: 56px; height: 56px; border-radius: 50%; background: #25d366;
+    display: grid; place-items: center; box-shadow: 0 8px 20px rgba(0, 0, 0, .25); }
+  .wa-flotante svg { width: 30px; height: 30px; fill: #fff; }
+
+  @media (max-width: 900px) {
+    .portada .cont, .real { grid-template-columns: 1fr; }
+    .grilla, .web { grid-template-columns: 1fr 1fr; }
+    .pasos { grid-template-columns: 1fr 1fr; row-gap: 30px; }
+  }
+  @media (max-width: 720px) {
+    nav { display: none; position: absolute; top: 64px; left: 0; right: 0; flex-direction: column; gap: 0; background: var(--azul); padding: 8px 20px 18px; }
+    nav.abierto { display: flex; }
+    nav a { padding: 12px 0; width: 100%; border-bottom: 1px solid rgba(255, 255, 255, .08); }
+    nav .boton { margin-top: 12px; justify-content: center; border-bottom: 0; }
+    .menu-btn { display: block; }
+    .grilla, .web, .dolores, .planes { grid-template-columns: 1fr; }
+    section { padding: 64px 0; }
+    .portada { padding: 56px 0 64px; }
+    .ventana { font-size: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="cont barra">
+    <a class="logo" href="#inicio"><b>DGV</b> DGV Sistemas</a>
+    <button class="menu-btn" aria-label="Menú" onclick="document.querySelector('nav').classList.toggle('abierto')">☰</button>
+    <nav onclick="if(event.target.tagName==='A')this.classList.remove('abierto')">
+      <a href="#sistema">El sistema</a>
+      <a href="#modalidades">Cómo trabajamos</a>
+      <a href="#web">Sitios web</a>
+      <a class="boton b-naranja" href="#contacto">Pedí una demo</a>
+    </nav>
+  </div>
+</header>
+
+<!-- PORTADA -->
+<div class="portada" id="inicio">
+  <div class="cont">
+    <div>
+      <span class="etiqueta">Sistema de gestión para autopartistas</span>
+      <h1>Facturá, vendé y comprá <span>desde un solo sistema</span>, pensado para el rubro.</h1>
+      <p class="lead">Factura electrónica ARCA, listas de precios y descuentos por cliente, compras, recibos y cheques.
+        Desarrollado junto a una distribuidora y fábrica de autopartes que lo usa todos los días.</p>
+      <div class="acciones">
+        <a class="boton b-naranja" href="#contacto">Pedí una demo sin cargo</a>
+        <a class="boton b-linea" href="#sistema">Ver qué hace</a>
+      </div>
+      <div class="datos-rapidos">
+        <div><strong>+10 años</strong>de experiencia en el rubro</div>
+        <div><strong>ARCA</strong>factura electrónica directa</div>
+        <div><strong>100 %</strong>web, desde cualquier PC</div>
+      </div>
+    </div>
+
+    <div class="ventana" aria-hidden="true">
+      <div class="titulo"><i></i><i></i><i></i><span>Ventas › Factura A 0003-00004521</span></div>
+      <div class="cuerpo">
+        <div class="v-enc"><h4>REPUESTOS EL PISTÓN S.R.L.</h4><span class="chip">AUTORIZADA</span></div>
+        <table>
+          <tr><th>Código</th><th>Descripción</th><th class="n">Cant.</th><th class="n">Importe</th></tr>
+          <tr><td>BI-1045</td><td>Juego de juntas motor</td><td class="n">10</td><td class="n">$ 184.300,00</td></tr>
+          <tr><td>CA-2207</td><td>Carburador completo</td><td class="n">2</td><td class="n">$ 412.560,00</td></tr>
+          <tr><td>VA-0331</td><td>Válvula de admisión</td><td class="n">24</td><td class="n">$ 96.480,00</td></tr>
+          <tr><td colspan="3">Descuento por categoría (contado)</td><td class="n">− $ 69.334,00</td></tr>
+        </table>
+        <div class="v-total"><span>Total con IVA</span><span>$ 754.881,98</span></div>
+        <div class="v-cae">CAE 76432198765432 · vence 05/11 · enviada por correo al cliente ✓</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PROBLEMAS -->
+<section class="gris">
+  <div class="cont">
+    <div class="sec-titulo">
+      <small>¿Te pasa esto?</small>
+      <h2>Los sistemas genéricos no entienden cómo trabaja una autopartista</h2>
+    </div>
+    <div class="dolores">
+      <div class="dolor"><span class="x">✕</span><p>Cada cliente tiene su precio especial y sus descuentos, y se calculan a mano o en Excel.</p></div>
+      <div class="dolor"><span class="x">✕</span><p>Mandar una lista de precios o un presupuesto lleva media hora entre exportar, armar y adjuntar.</p></div>
+      <div class="dolor"><span class="x">✕</span><p>Depósito pide, compras compra y nadie sabe qué llegó y qué falta.</p></div>
+      <div class="dolor"><span class="x">✕</span><p>El sistema es viejo, solo anda en una PC, y nadie sabe si los datos están respaldados.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- EL SISTEMA -->
+<section id="sistema">
+  <div class="cont">
+    <div class="sec-titulo">
+      <small>El sistema</small>
+      <h2>Todo lo que una autopartista necesita, en un mismo lugar</h2>
+      <p>Módulos de ventas, compras, depósito y finanzas que comparten los mismos datos.</p>
+    </div>
+    <div class="grilla">
+      <div class="tarjeta"><div class="icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h6"/></svg></div>
+        <h3>Factura electrónica ARCA</h3><p>Facturas A y B, notas de crédito y débito con CAE directo de ARCA, sin intermediarios. El PDF sale por correo al cliente.</p></div>
+      <div class="tarjeta"><div class="icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L2 12V2h10l8.6 8.6a2 2 0 0 1 0 2.8z"/><circle cx="7" cy="7" r="1.5"/></svg></div>
+        <h3>Precios y descuentos por cliente</h3><p>Precio especial, descuento por categoría y por artículo, de contado y a plazo. Lista de precios del cliente en pantalla, Excel o por correo.</p></div>
+      <div class="tarjeta"><div class="icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z"/><path d="m22 6-10 7L2 6"/></svg></div>
+        <h3>Presupuestos y pedidos por correo</h3><p>Presupuestos, pedidos, listas de precios y ofertas salen por correo con un clic, con el formato de tu empresa.</p></div>
+      <div class="tarjeta"><div class="icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg></div>
+        <h3>Compras de punta a punta</h3><p>Órdenes internas del depósito, órdenes de compra a proveedores, recepción de mercadería y lo que falta, en un solo circuito.</p></div>
+      <div class="tarjeta"><div class="icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20M6 15h4"/></svg></div>
+        <h3>Recibos, cheques y pagos</h3><p>Recibos de cobranza con cheques y retenciones, cartera de cheques y órdenes de pago a proveedores.</p></div>
+      <div class="tarjeta"><div class="icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg></div>
+        <h3>Respaldos con informe diario</h3><p>Copia automática de la base todos los días, en la oficina y fuera de ella, y un correo cada mañana que confirma que salió bien.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBADO EN SERIO -->
+<section class="gris">
+  <div class="cont real">
+    <div>
+      <small style="color:var(--naranja);font-weight:700;letter-spacing:1.2px;text-transform:uppercase;font-size:13px">Probado en serio</small>
+      <h2>No es un prototipo: lo usa una empresa del rubro todos los días</h2>
+      <p style="color:var(--suave);font-size:17px;margin:0">El sistema nació dentro de una distribuidora y fábrica de autopartes y se fue puliendo con el uso
+        de ventas, compras, depósito y administración. Cada función resuelve un problema real.</p>
+      <ul class="lista-ok">
+        <li>Funciona en el navegador: se entra desde cualquier PC de la oficina, sin instalar nada.</li>
+        <li>Usuarios con permisos por sector: cada uno ve lo que le corresponde.</li>
+        <li>Los datos quedan en tu servidor o en la nube, y siempre son tuyos.</li>
+        <li>Pasamos los datos de tu sistema actual: clientes, productos y precios.</li>
+      </ul>
+    </div>
+    <div class="cita">
+      <p>Una lista de precios con los descuentos de cada cliente, que antes se armaba a mano, hoy sale por correo en un minuto.</p>
+      <span>Un ejemplo de lo que cambia en el día a día</span>
+    </div>
+  </div>
+</section>
+
+<!-- MODALIDADES -->
+<section id="modalidades">
+  <div class="cont">
+    <div class="sec-titulo">
+      <small>Cómo trabajamos</small>
+      <h2>Elegí cómo querés tenerlo</h2>
+      <p>En los dos casos incluye la puesta en marcha, la capacitación y el soporte.</p>
+    </div>
+    <div class="planes">
+      <div class="plan">
+        <h3>En tu servidor</h3>
+        <p class="sub">Instalación en un equipo de tu empresa + abono mensual</p>
+        <ul>
+          <li>Instalación y configuración completa</li>
+          <li>Migración de tus datos actuales</li>
+          <li>Respaldos automáticos con informe diario</li>
+          <li>Soporte, mantenimiento y actualizaciones</li>
+        </ul>
+      </div>
+      <div class="plan destacado">
+        <h3>En la nube</h3>
+        <p class="sub">Sin servidor propio: un abono mensual con todo incluido</p>
+        <ul>
+          <li>Entrás desde la oficina o desde tu casa</li>
+          <li>Alojamiento, respaldos y seguridad por nuestra cuenta</li>
+          <li>Migración de tus datos actuales</li>
+          <li>Soporte, mantenimiento y actualizaciones</li>
+        </ul>
+      </div>
+    </div>
+    <div class="pasos">
+      <div class="paso"><b>1</b><h4>Demo</h4><p>Te mostramos el sistema funcionando con datos de ejemplo.</p></div>
+      <div class="paso"><b>2</b><h4>Relevamiento</h4><p>Vemos cómo trabaja tu empresa y qué hay que ajustar.</p></div>
+      <div class="paso"><b>3</b><h4>Puesta en marcha</h4><p>Instalamos, pasamos tus datos y capacitamos a cada sector.</p></div>
+      <div class="paso"><b>4</b><h4>Acompañamiento</h4><p>Soporte y mejoras continuas mientras lo usás.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- SITIOS WEB -->
+<section class="gris" id="web">
+  <div class="cont">
+    <div class="sec-titulo">
+      <small>Sitios web</small>
+      <h2>También desarrollamos y mantenemos tu sitio web</h2>
+      <p>Para autopartistas y para cualquier empresa o comercio que necesite estar bien presentado en internet.</p>
+    </div>
+    <div class="web">
+      <div class="tarjeta"><div class="icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/></svg></div>
+        <h3>Sitio institucional</h3><p>Quiénes son, qué hacen y cómo contactarlos. Rápido, prolijo y que se vea bien en el celular.</p></div>
+      <div class="tarjeta"><div class="icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></div>
+        <h3>Catálogo de productos</h3><p>Tu catálogo en la web, con búsqueda por código, descripción o aplicación. Si usás nuestro sistema, se actualiza solo.</p></div>
+      <div class="tarjeta"><div class="icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18v3h3l6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.4-.6-.6-2.4z"/></svg></div>
+        <h3>Mantenimiento</h3><p>Cambios, actualizaciones, respaldos, dominio y correo. Nos ocupamos para que no tengas que pensar en eso.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<section class="contacto" id="contacto">
+  <div class="cont">
+    <h2>¿Lo querés ver funcionando?</h2>
+    <p>Coordinamos una demo de media hora, en tu empresa o por videollamada, sin compromiso.
+      Contanos cómo trabajan hoy y te mostramos cómo lo resolvería el sistema.</p>
+    <div class="acciones">
+      <!-- CAMBIAR: numero de WhatsApp con 549 + caracteristica sin 0 + numero sin 15 (ej. 5491122334455) -->
+      <a class="boton b-naranja" href="https://wa.me/549XXXXXXXXXX?text=Hola%2C%20quiero%20ver%20una%20demo%20del%20sistema%20de%20DGV%20Sistemas" target="_blank" rel="noopener">Escribinos por WhatsApp</a>
+      <!-- CAMBIAR: correo de contacto -->
+      <a class="boton b-linea" href="mailto:contacto@dgvsistemas.com.ar?subject=Demo%20del%20sistema">contacto@dgvsistemas.com.ar</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="cont">
+    <span>© <span id="anio">2026</span> DGV Sistemas · Sistemas de gestión y sitios web</span>
+    <span>Argentina</span>
+  </div>
+</footer>
+
+<!-- CAMBIAR: mismo numero de WhatsApp -->
+<a class="wa-flotante" href="https://wa.me/549XXXXXXXXXX?text=Hola%2C%20quiero%20ver%20una%20demo%20del%20sistema%20de%20DGV%20Sistemas" target="_blank" rel="noopener" aria-label="WhatsApp">
+  <svg viewBox="0 0 32 32"><path d="M16 3a13 13 0 0 0-11.2 19.6L3 29l6.6-1.7A13 13 0 1 0 16 3zm0 23.7a10.6 10.6 0 0 1-5.4-1.5l-.4-.2-3.9 1 1-3.8-.3-.4A10.7 10.7 0 1 1 16 26.7zm5.9-8c-.3-.2-1.9-.9-2.2-1s-.5-.2-.7.2-.8 1-1 1.2-.4.2-.7.1a8.7 8.7 0 0 1-4.3-3.8c-.3-.6.3-.5.9-1.7.1-.2 0-.4 0-.5l-1-2.4c-.3-.6-.5-.5-.7-.5h-.6a1.2 1.2 0 0 0-.9.4 3.6 3.6 0 0 0-1.1 2.7 6.3 6.3 0 0 0 1.3 3.3 14.3 14.3 0 0 0 5.5 4.9c2 .9 2.8.9 3.8.8a3.3 3.3 0 0 0 2.2-1.5 2.7 2.7 0 0 0 .2-1.5c-.1-.2-.3-.3-.6-.4z"/></svg>
+</a>
+
+<script>document.getElementById('anio').textContent = new Date().getFullYear();</script>
+</body>
+</html>

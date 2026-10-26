@@ -1,0 +1,24 @@
+DGV SISTEMAS - PAGINA DE PRESENTACION
+Una sola pagina (index.html), sin base de datos ni PHP: se publica gratis en GitHub Pages.
+
+ANTES DE PUBLICAR: en index.html buscar "CAMBIAR" (3 lugares)
+  - Numero de WhatsApp: 549 + caracteristica sin 0 + numero sin 15 (ej. 5491122334455), en los 2 enlaces wa.me
+  - Correo de contacto (hoy dice contacto@dgvsistemas.com.ar, que solo anda si se compra el dominio y se arma el correo)
+
+VERLA EN LA PC: abrir index.html con el navegador (doble clic).
+
+PUBLICAR EN GITHUB PAGES (una sola vez)
+  1. En github.com: New repository, nombre dgv-sistemas, Public, sin README.
+  2. En la PC (carpeta ~/proyectos/dgv-sistemas):
+       git remote add origin git@github.com:dvillalva/dgv-sistemas.git
+       git push -u origin main
+  3. En el repositorio: Settings > Pages > Source: "Deploy from a branch", Branch: main, carpeta / (root) > Save.
+  4. En 1 o 2 minutos queda en https://dvillalva.github.io/dgv-sistemas/
+  Despues, cada cambio: git commit -am "..." && git push   (se actualiza sola).
+
+DOMINIO PROPIO (opcional, dgvsistemas.com.ar)
+  1. Registrarlo en nic.ar con clave fiscal.
+  2. En nic.ar, delegar el dominio a un DNS (por ejemplo Cloudflare, gratis) y crear:
+       CNAME  www  ->  dvillalva.github.io
+       A      @    ->  185.199.108.153, 185.199.109.153, 185.199.110.153, 185.199.111.153
+  3. En GitHub: Settings > Pages > Custom domain: www.dgvsistemas.com.ar, y tildar "Enforce HTTPS".
