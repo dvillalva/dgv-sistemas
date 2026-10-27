@@ -2,8 +2,9 @@ DGV SISTEMAS - PAGINA DE PRESENTACION
 Una sola pagina (index.html), sin base de datos ni PHP: se publica gratis en GitHub Pages.
 
 ANTES DE PUBLICAR: en index.html buscar "CAMBIAR" (3 lugares)
-  - Numero de WhatsApp: 549 + caracteristica sin 0 + numero sin 15 (ej. 5491122334455), en los 2 enlaces wa.me
-  - Correo de contacto (hoy dice contacto@dgvsistemas.com.ar, que solo anda si se compra el dominio y se arma el correo)
+  - Numero de WhatsApp: 549 + caracteristica sin 0 + numero sin 15 (ej. 5491122334455), en los 2 enlaces wa.me,
+    y sacarles "hidden" (mientras no haya numero, los botones de WhatsApp no se muestran)
+  - Correo de contacto (hoy damian.villalva@gmail.com; cambiarlo cuando haya dominio y correo propio)
 
 VERLA EN LA PC: abrir index.html con el navegador (doble clic).
 
