@@ -94,6 +94,17 @@
   .icono { width: 46px; height: 46px; border-radius: 11px; display: grid; place-items: center; background: rgba(242, 140, 40, .13); color: var(--naranja); }
   .icono svg { width: 24px; height: 24px; }
 
+  /* Capturas */
+  .galeria { display: grid; grid-template-columns: repeat(2, 1fr); gap: 26px; }
+  .captura { margin: 0; background: var(--tarjeta); border: 1px solid var(--borde); border-radius: 14px; overflow: hidden; box-shadow: var(--sombra); }
+  .captura.grande { grid-column: 1 / -1; }
+  .captura a { display: block; line-height: 0; border-bottom: 1px solid var(--borde); }
+  .captura img { width: 100%; height: auto; display: block; transition: opacity .15s; }
+  .captura a:hover img { opacity: .92; }
+  .captura figcaption { padding: 16px 20px; font-size: 15px; color: var(--suave); }
+  .captura figcaption b { display: block; color: var(--texto); font-size: 16px; margin-bottom: 2px; }
+  .nota-demo { text-align: center; color: var(--suave); font-size: 14px; margin: 26px 0 0; }
+
   /* Problemas */
   .dolores { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; max-width: 900px; margin: 0 auto; }
   .dolor { display: flex; gap: 14px; align-items: flex-start; background: var(--tarjeta); border: 1px solid var(--borde); border-radius: 12px; padding: 18px 20px; }
@@ -152,7 +163,7 @@
     nav a { padding: 12px 0; width: 100%; border-bottom: 1px solid rgba(255, 255, 255, .08); }
     nav .boton { margin-top: 12px; justify-content: center; border-bottom: 0; }
     .menu-btn { display: block; }
-    .grilla, .web, .dolores, .planes { grid-template-columns: 1fr; }
+    .grilla, .web, .dolores, .planes, .galeria { grid-template-columns: 1fr; }
     section { padding: 64px 0; }
     .portada { padding: 56px 0 64px; }
     .ventana { font-size: 12px; }
@@ -167,6 +178,7 @@
     <button class="menu-btn" aria-label="Menú" onclick="document.querySelector('nav').classList.toggle('abierto')">☰</button>
     <nav onclick="if(event.target.tagName==='A')this.classList.remove('abierto')">
       <a href="#sistema">El sistema</a>
+      <a href="#capturas">Capturas</a>
       <a href="#modalidades">Cómo trabajamos</a>
       <a href="#web">Sitios web</a>
       <a class="boton b-naranja" href="#contacto">Pedí una demo</a>
@@ -252,8 +264,32 @@
   </div>
 </section>
 
+<!-- CAPTURAS -->
+<section class="gris" id="capturas">
+  <div class="cont">
+    <div class="sec-titulo">
+      <small>Así se ve</small>
+      <h2>Pantallas reales del sistema</h2>
+      <p>Claro y ordenado, pensado para usarlo todo el día. Tocá una imagen para verla en grande.</p>
+    </div>
+    <div class="galeria">
+      <figure class="captura grande"><a href="img/precios-cliente.png" target="_blank" rel="noopener"><img src="img/precios-cliente.png" width="1440" height="900" loading="lazy" alt="Lista de precios de un cliente con descuentos de contado y a plazo"></a>
+        <figcaption><b>Lista de precios por cliente</b>Precio de lista, precio especial y descuentos por artículo y por categoría, de contado y a plazo. Se exporta a Excel, se imprime o sale por correo.</figcaption></figure>
+      <figure class="captura"><a href="img/productos.png" target="_blank" rel="noopener"><img src="img/productos.png" width="1440" height="900" loading="lazy" alt="Listado de productos con precio y stock"></a>
+        <figcaption><b>Productos</b>Búsqueda por código o descripción, precio y stock con alerta de mínimo.</figcaption></figure>
+      <figure class="captura"><a href="img/clientes.png" target="_blank" rel="noopener"><img src="img/clientes.png" width="1440" height="900" loading="lazy" alt="Listado de clientes"></a>
+        <figcaption><b>Clientes</b>Ficha, cuenta corriente y lista de precios de cada cliente a un clic.</figcaption></figure>
+      <figure class="captura"><a href="img/art-prov.png" target="_blank" rel="noopener"><img src="img/art-prov.png" width="1440" height="900" loading="lazy" alt="Artículos que se compran a cada proveedor"></a>
+        <figcaption><b>Artículos de proveedores</b>Lo que se le compra a cada proveedor, con su código, para cargar órdenes de compra sin errores.</figcaption></figure>
+      <figure class="captura"><a href="img/historial-oc.png" target="_blank" rel="noopener"><img src="img/historial-oc.png" width="1440" height="900" loading="lazy" alt="Historial de pedidos a proveedores"></a>
+        <figcaption><b>Historial de compras</b>Qué se pidió, cuándo y cuánto llegó de cada pedido a proveedores.</figcaption></figure>
+    </div>
+    <p class="nota-demo">Capturas de la versión de demostración, con datos ficticios.</p>
+  </div>
+</section>
+
 <!-- PROBADO EN SERIO -->
-<section class="gris">
+<section>
   <div class="cont real">
     <div>
       <small style="color:var(--naranja);font-weight:700;letter-spacing:1.2px;text-transform:uppercase;font-size:13px">Probado en serio</small>
@@ -275,7 +311,7 @@
 </section>
 
 <!-- MODALIDADES -->
-<section id="modalidades">
+<section class="gris" id="modalidades">
   <div class="cont">
     <div class="sec-titulo">
       <small>Cómo trabajamos</small>
@@ -314,7 +350,7 @@
 </section>
 
 <!-- SITIOS WEB -->
-<section class="gris" id="web">
+<section id="web">
   <div class="cont">
     <div class="sec-titulo">
       <small>Sitios web</small>
