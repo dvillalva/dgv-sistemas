@@ -1,0 +1,106 @@
+DGV SISTEMAS - COMO CAMBIAR LA PAGINA Y SUBIRLA A GITHUB
+Toda la pagina es un solo archivo: ~/proyectos/dgv-sistemas/index.html (las imagenes, en img/).
+Se edita con cualquier editor de texto (Text Editor de Ubuntu, VS Code, nano). No hay que compilar nada.
+
+=====================================================================
+1. COMO ESTA ARMADA
+=====================================================================
+De arriba hacia abajo:
+  - <style> ... </style> ..... colores, letras y diseño (no hace falta tocarlo)
+  - <header> ................. logo y menu (los enlaces "El sistema", "Capturas", etc.)
+  - <!-- PORTADA --> ......... titulo grande y la factura de muestra
+  - <!-- PROBLEMAS --> ....... "¿Te pasa esto?"
+  - <!-- EL SISTEMA --> ...... las 6 tarjetas de funciones          (id="sistema")
+  - <!-- CAPTURAS --> ........ galeria de pantallas                  (id="capturas")
+  - <!-- PROBADO EN SERIO -->
+  - <!-- MODALIDADES --> ..... en tu servidor / en la nube, 4 pasos  (id="modalidades")
+  - <!-- SITIOS WEB --> ...... (id="web")
+  - <!-- CONTACTO --> ........ correo y WhatsApp                     (id="contacto")
+  - <footer> ................. pie de pagina
+Cada seccion empieza con su comentario <!-- NOMBRE --> y termina en </section>: buscar el nombre con Ctrl+F.
+
+Fondo de las secciones: <section class="gris"> es gris claro, <section> sola es blanca.
+Conviene alternarlas (gris, blanca, gris...) para que no queden dos iguales seguidas.
+
+=====================================================================
+2. CAMBIAR UN TEXTO
+=====================================================================
+Buscar el texto con Ctrl+F y cambiarlo entre las etiquetas, sin borrar los < >:
+  <h2>Pantallas reales del sistema</h2>   ->  cambiar solo "Pantallas reales del sistema"
+  <p>...</p> parrafo, <h3>...</h3> titulo de tarjeta, <li>...</li> renglon de una lista, <b>...</b> negrita.
+Acentos y ñ se escriben normal.
+
+=====================================================================
+3. AGREGAR UNA TARJETA (en EL SISTEMA o SITIOS WEB)
+=====================================================================
+Copiar una tarjeta entera (desde <div class="tarjeta"> hasta su </div> final, que esta despues del </p>),
+pegarla a continuacion y cambiar el <h3> y el <p>. El dibujito (<svg>...</svg>) se puede dejar el mismo
+o sacar otro de https://lucide.dev (boton "Copy SVG"; pegarlo en lugar del <svg> viejo).
+
+=====================================================================
+4. AGREGAR O CAMBIAR UNA CAPTURA
+=====================================================================
+  1. Sacar la captura de la DEMO (http://localhost/caresa/demo), nunca del sistema de CARESA:
+     que no se vean CUIT, nombres ni datos reales. Ventana del navegador maximizada; tecla ImprPant
+     o la herramienta de capturas de Ubuntu.
+  2. Guardarla en ~/proyectos/dgv-sistemas/img/ con nombre en minusculas, sin espacios ni acentos
+     (ej. carburadores.png).
+  3. En la seccion CAPTURAS copiar un bloque <figure class="captura"> ... </figure> y cambiar:
+       los dos "img/xxx.png" por el nombre nuevo, el alt="..." (descripcion corta),
+       y el <figcaption><b>Titulo</b>Texto</figcaption>.
+     Si la imagen no es de 1440 x 900, cambiar width="..." height="..." por su tamaño real
+     (clic derecho en el archivo > Propiedades > Imagen).
+  4. class="captura grande" ocupa todo el ancho; class="captura" va de a dos por renglon.
+  Para reemplazar una captura existente alcanza con pisar el archivo en img/ con el mismo nombre.
+
+=====================================================================
+5. AGREGAR UNA SECCION NUEVA
+=====================================================================
+  1. Elegir donde va y pegar, entre el </section> de una y el comentario de la siguiente:
+
+<!-- NOMBRE DE LA SECCION -->
+<section class="gris" id="nombre">
+  <div class="cont">
+    <div class="sec-titulo">
+      <small>Rotulo chico</small>
+      <h2>Titulo de la seccion</h2>
+      <p>Texto de presentacion.</p>
+    </div>
+    <p>Contenido. Se pueden copiar tarjetas, listas o lo que haya en otras secciones.</p>
+  </div>
+</section>
+
+  2. id="nombre": una sola palabra, minusculas, sin acentos (ej. id="precios"). Poner class="gris" o sacarlo
+     segun le toque para alternar los fondos.
+  3. Si tiene que aparecer en el menu, agregar en <nav> (arriba de todo), en el orden que corresponda:
+       <a href="#nombre">Texto del menu</a>
+     Mas de 5 o 6 enlaces no entran bien en el menu de la PC.
+
+Para SACAR una seccion: borrar desde su <!-- COMENTARIO --> hasta su </section>, y su enlace del <nav> si tenia.
+
+=====================================================================
+6. PROBARLO EN LA PC ANTES DE SUBIR
+=====================================================================
+  Abrir ~/proyectos/dgv-sistemas/index.html con doble clic (se abre en el navegador).
+  Despues de cada cambio: guardar y F5 en el navegador.
+  Ver como queda en celular: F12 > icono del celular (o Ctrl+Shift+M en Firefox).
+  Si algo se desarma: casi siempre falta cerrar una etiqueta (un </div> o </p>). Volver atras con
+  Ctrl+Z en el editor, o descartar todos los cambios sin subir con:
+    cd ~/proyectos/dgv-sistemas && git checkout -- .
+
+=====================================================================
+7. SUBIRLO A GITHUB (queda publicado solo)
+=====================================================================
+  En una terminal, un solo comando (cambiar el texto entre comillas por lo que se hizo):
+    cd ~/proyectos/dgv-sistemas && git add -A && git commit -m "Seccion de precios" && git push
+
+  - git add -A suma tambien las imagenes nuevas (y quita las borradas).
+  - En 1 o 2 minutos se ve en https://dvillalva.github.io/dgv-sistemas/
+    (si se ve la version vieja: Ctrl+F5, o pestaña de incognito).
+  - Para ver si se publico: github.com/dvillalva/dgv-sistemas > pestaña Actions (tilde verde = listo).
+  - Para ver que se cambio antes de subir:  cd ~/proyectos/dgv-sistemas && git status && git diff
+
+Volver a una version anterior ya subida: pedirmelo, o ver la lista con
+    cd ~/proyectos/dgv-sistemas && git log --oneline
+y deshacer el ultimo cambio con
+    cd ~/proyectos/dgv-sistemas && git revert --no-edit HEAD && git push

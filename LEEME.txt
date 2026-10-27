@@ -1,6 +1,8 @@
 DGV SISTEMAS - PAGINA DE PRESENTACION
 Una sola pagina (index.html), sin base de datos ni PHP: se publica gratis en GitHub Pages.
 
+Para cambiar textos, capturas o secciones y subirlo: ver COMO-EDITAR.txt
+
 ANTES DE PUBLICAR: en index.html buscar "CAMBIAR" (3 lugares)
   - Numero de WhatsApp: 549 + caracteristica sin 0 + numero sin 15 (ej. 5491122334455), en los 2 enlaces wa.me,
     y sacarles "hidden" (mientras no haya numero, los botones de WhatsApp no se muestran)
